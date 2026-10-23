@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Lost &amp; Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div>
+        <h1>Campus Lost &amp; Found</h1>
+        <p class="lede">Lost something on campus, or found something that isn't yours? Post it here so it can get back to its owner.</p>
+        <p class="stats" id="stats" aria-live="polite"></p>
+      </div>
+      <button class="btn btn-primary" id="newItemBtn" type="button">Report an item</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="Filter items">
+      <div class="segmented" role="group" aria-label="Show">
+        <button type="button" data-type="" aria-pressed="true">All</button>
+        <button type="button" data-type="lost" aria-pressed="false">Lost</button>
+        <button type="button" data-type="found" aria-pressed="false">Found</button>
+      </div>
+      <label class="field-inline search">
+        <span class="visually-hidden">Search</span>
+        <input type="search" id="searchInput" placeholder="Search by name, description or place" />
+      </label>
+      <label class="field-inline">
+        <span class="visually-hidden">Category</span>
+        <select id="categoryFilter"><option value="">All categories</option></select>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="showClaimed" />
+        <span>Show claimed items</span>
+      </label>
+    </section>
+
+    <p class="message" id="listMessage" role="status"></p>
+    <section class="board" id="board" aria-label="Items"></section>
+  </main>
+
+  <!-- Create / edit form -->
+  <dialog id="itemDialog" aria-labelledby="formTitle">
+    <form id="itemForm" novalidate>
+      <h2 id="formTitle">Report an item</h2>
+
+      <fieldset class="type-choice">
+        <legend>What happened?</legend>
+        <label><input type="radio" name="type" value="lost" checked /> I lost something</label>
+        <label><input type="radio" name="type" value="found" /> I found something</label>
+      </fieldset>
+
+      <div class="grid-2">
+        <label class="field span-2">Item name
+          <input name="title" required minlength="3" maxlength="80" placeholder="e.g. Blue Casio calculator" />
+        </label>
+        <label class="field">Category
+          <select name="category" id="categorySelect" required></select>
+        </label>
+        <label class="field">Date
+          <input type="date" name="date" id="dateInput" required />
+        </label>
+        <label class="field span-2">Where on campus
+          <input name="location" required maxlength="100" placeholder="e.g. Central Library, 2nd floor" />
+        </label>
+        <label class="field span-2">Description <span class="hint">(optional)</span>
+          <textarea name="description" rows="3" maxlength="500" placeholder="Colour, brand, stickers, anything that helps identify it"></textarea>
+        </label>
+        <label class="field">Your name
+          <input name="contactName" required maxlength="60" />
+        </label>
+        <label class="field">Phone or email
+          <input name="contactInfo" required maxlength="80" />
+        </label>
+        <label class="field span-2">Photo link <span class="hint">(optional)</span>
+          <input type="url" name="imageUrl" placeholder="https://..." />
+        </label>
+      </div>
+
+      <p class="form-error" id="formError" role="alert"></p>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveBtn">Post item</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Matches -->
+  <dialog id="matchDialog" aria-labelledby="matchTitle">
+    <div class="match-body">
+      <h2 id="matchTitle">Possible matches</h2>
+      <p class="hint" id="matchIntro"></p>
+      <ul class="match-list" id="matchList"></ul>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" data-close>Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
